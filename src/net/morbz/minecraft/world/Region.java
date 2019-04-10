@@ -26,6 +26,12 @@ package net.morbz.minecraft.world;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 import net.morbz.minecraft.blocks.IBlock;
 import net.unknown.RegionFile;
@@ -47,6 +53,11 @@ public class Region implements IBlockContainer {
 	 * Blocks per region side
 	 */
 	public static final int BLOCKS_PER_REGION_SIDE = CHUNKS_PER_REGION_SIDE * Chunk.BLOCKS_PER_CHUNK_SIDE;
+    
+    /**
+     * If true, saves a text version of the blocks in each region
+     */
+    public static boolean OUTPUT_TEXT = false;
 	
 	private Chunk[][] chunks = new Chunk[CHUNKS_PER_REGION_SIDE][CHUNKS_PER_REGION_SIDE];
 	private DefaultLayers layers;
@@ -232,6 +243,14 @@ public class Region implements IBlockContainer {
 						} finally {
 							out.close();
 						}
+                        if (OUTPUT_TEXT) {
+                            Path chunksDirPath = Paths.get(path.getParentFile().toString(), path.getName().replace(".mca", ""));
+                            Files.createDirectories(chunksDirPath);
+                            Path chunkPath = Paths.get(chunksDirPath.toString(), "c." + x + "." + z + ".txt");
+                            List<String> content = List.of(chunk.getTag().toString());
+                            Files.write(chunkPath, content, StandardCharsets.UTF_8,
+                                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+                        }
 					}
 				}
 			}
