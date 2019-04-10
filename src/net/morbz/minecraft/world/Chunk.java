@@ -284,7 +284,6 @@ public class Chunk implements ITagProvider, IBlockContainer {
 		factory2.set(factory.getTag());
 		factory2.set(new IntTag("xPos", xPos));
 		factory2.set(new IntTag("zPos", zPos));
-		factory2.set(new LongTag("LastUpdate", System.currentTimeMillis()));
 		factory2.set(new ByteTag("V", (byte)1));
 		factory2.set(new ByteTag("LightPopulated", (byte)1));
 		factory2.set(new ByteTag("TerrainPopulated", (byte)1));
